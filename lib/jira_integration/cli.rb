@@ -106,13 +106,6 @@ module JiraIntegration
       puts JiraIntegration.api_client.myself.to_yaml
     end
 
-    desc "pull_request <issue_id> [branch_name]", "[NYI] create pull request for issue"
-    def pull_request
-      branch_name = 'feature/AD-1282-something-done'
-      "git push --set-upstream origin '#{branch_name}'"
-      "hub pull-request -m 'AD-1282: fix form preview' -b 'develop' -h '#{branch_name}'"
-    end
-
     desc "show_filter", "print information about the informed filter"
     def show_filter(filter_id)
       filter = JiraIntegration.api_client.filter(filter_id)
