@@ -19,7 +19,7 @@ module JiraIntegration
           File.join(File.expand_path("../..", __FILE__), file_id)
         end
         logger = Logger.new file
-        # logger.level = Logger.const_get level.upcase
+        logger.level = Logger.const_get level.upcase
         logger
       end
     end
@@ -36,7 +36,6 @@ module JiraIntegration
 
 end
 
-require 'jira_integration/help'
 require 'jira_integration/cli'
 require 'jira_integration/api_client'
 require 'jira_integration/version'

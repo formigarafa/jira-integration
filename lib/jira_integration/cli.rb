@@ -1,52 +1,6 @@
 module JiraIntegration
   class Cli < Thor
-    class_option :format, type: :string, default: "kv", desc: "json, yaml or kv"
-
-    desc "branch <issue_id> [branch name] [--branch-from=develop]", "create branch for issue"
-    option :branch_from, type: :string, default: "develop", desc: "base branch for ne branch"
-    option :branch_name, type: :string, desc: "description appended to branch name after its task id"
-    def branch(issue_id)
-      data = JiraIntegration.api_client.issue(issue_id, fields: ['summary'])
-      key = data[:key]
-      if options[:branch_name]
-        branch_name = commandify(options[:branch_name])
-        branch_name = "feature/#{key}-#{branch_name}"
-      else
-        branches = `git branch --no-color -a`.lines.map(&:strip)
-        branches = branches.map{|b| b.sub(/^\*\s+/, '').sub(/^remotes\/[^\/]+\//, '') }
-        branches = branches.uniq
-
-        search_regexp = Regexp.new("/#{key}-", :i)
-        related_branches = branches.grep(search_regexp)
-
-        if related_branches.empty?
-          branch_name = data[:fields][:summary]
-          branch_name = commandify(branch_name)
-          branch_name = "feature/#{key}-#{branch_name}"
-        elsif related_branches.size == 1
-          branch_name = related_branches.first
-        else
-          puts "too many found: please, specify branch name."
-          puts related_branches.join("\n")
-          return
-        end
-      end
-      `git checkout "#{branch_name}" 2>/dev/null || git checkout -b "#{branch_name}" "#{options[:branch_from]}"`
-    end
-
-    desc "branches <issue_id>", "list existing branches for issue"
-    def branches(issue_id)
-      data = JiraIntegration.api_client.issue(issue_id)
-      key = data[:key]
-
-      branches = `git branch --no-color -a`.lines.map(&:strip)
-      branches = branches.map{|b| b.sub(/^\*\s+/, '').sub(/^remotes\/[^\/]+\//, '') }
-      branches = branches.uniq
-      search_regexp = Regexp.new("/#{key}-", :i)
-      related_branches = branches.grep(search_regexp)
-
-      print_data related_branches.map{|i| {branch_name: i }}
-    end
+    class_option :format, type: :string, default: "kv", desc: "output format for query commands: json, yaml, kv or tp"
 
     desc "filter <filter_id>", "print filtered issues"
     def filter(filter_id)

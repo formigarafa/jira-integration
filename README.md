@@ -4,15 +4,21 @@ Jira Command line client used to drive jira REST api.
 
 ## Usage:
 ```
-jira-cli <command> [options] [arguments]
+jira-cli <command> [options]
+Commands:
+  jira-cli filter <filter_id>                             # print filtered issues
+  jira-cli filters                                        # print current user existing filters
+  jira-cli help [COMMAND]                                 # Describe available commands or one specific command
+  jira-cli issue <issue_id>                               # print information about specified issue
+  jira-cli issue_transitions <issue_id>                   # list available transitions for specified issue
+  jira-cli myself                                         # print print information about current user
+  jira-cli show_filter                                    # print information about the informed filter
+  jira-cli transition <issue_id> <transition id or name>  # transition a issue to another state
+
+Options:
+  [--format=FORMAT]  # output format for query commands: json, yaml, kv or tp
+                     # Default: kv
 ```
-- filter               print filtered issues
-- filters              print current user existing filters
-- issue                print information about specified issue
-- issue_transitions    list available transitions for specified issue
-- myself               print print information about current user
-- show_filter          print information about the informed filter
-- transition           transition a issue to another state
 
 ## Installation:
 
